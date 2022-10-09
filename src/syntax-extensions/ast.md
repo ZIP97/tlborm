@@ -17,7 +17,7 @@ Rust 语法的一部分。
 - 过程宏属性 ([proc-macro attributes])
 - 派生属性 ([derive attributes])
 
-内置的属性由编译器实现。宏属性和派生属性在 Rust 第二类宏系统 —— 过程宏 ([procedural macros]) —— 中实现。
+内置的属性由编译器实现。过程宏属性和派生属性在 Rust 第二类宏系统 —— 过程宏 ([procedural macros]) —— 中实现。
 
 我们感兴趣的是第 3 种：`$name ! $arg` —— 函数式 (function-like) 的宏。这种形式的宏可以通过
 `macro_rules!`、 `macro` 和过程宏三种方式来使用（或者说定义）。
