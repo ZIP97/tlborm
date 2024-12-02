@@ -1,0 +1,428 @@
+<!DOCTYPE HTML>
+<html lang="zh" class="sidebar-visible no-js ayu">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>再谈元变量与宏展开 - The Little Book of Rust Macros （Rust 宏小册）</title>
+
+
+        <!-- Custom HTML head -->
+
+        <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff" />
+
+        <link rel="icon" href="../../favicon.svg">
+        <link rel="shortcut icon" href="../../favicon.png">
+        <link rel="stylesheet" href="../../css/variables.css">
+        <link rel="stylesheet" href="../../css/general.css">
+        <link rel="stylesheet" href="../../css/chrome.css">
+
+        <!-- Fonts -->
+        <link rel="stylesheet" href="../../FontAwesome/css/font-awesome.css">
+        <link rel="stylesheet" href="../../fonts/fonts.css">
+
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" href="../../highlight.css">
+        <link rel="stylesheet" href="../../tomorrow-night.css">
+        <link rel="stylesheet" href="../../ayu-highlight.css">
+
+        <!-- Custom theme stylesheets -->
+        <link rel="stylesheet" href="../../theme/pagetoc.css">
+        <link rel="stylesheet" href="../../theme/rust-syntax-bg-highlight.css">
+
+        <!-- MathJax -->
+        <script async type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    </head>
+    <body>
+        <!-- Provide site root to javascript -->
+        <script type="text/javascript">
+            var path_to_root = "../../";
+            var default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? "navy" : "ayu";
+        </script>
+
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script type="text/javascript">
+            try {
+                var theme = localStorage.getItem('mdbook-theme');
+                var sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script type="text/javascript">
+            var theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
+            if (theme === null || theme === undefined) { theme = default_theme; }
+            var html = document.querySelector('html');
+            html.classList.remove('no-js')
+            html.classList.remove('ayu')
+            html.classList.add(theme);
+            html.classList.add('js');
+        </script>
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script type="text/javascript">
+            var html = document.querySelector('html');
+            var sidebar = 'hidden';
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            }
+            html.classList.remove('sidebar-visible');
+            html.classList.add("sidebar-" + sidebar);
+        </script>
+
+        <nav id="sidebar" class="sidebar" aria-label="Table of contents">
+            <div class="sidebar-scrollbox">
+                <ol class="chapter"><li class="chapter-item expanded affix "><a href="introduction.html">简介</a></li><li class="chapter-item expanded "><a href="syntax-extensions.html"><strong aria-hidden="true">1.</strong> 语法拓展</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="syntax-extensions/source-analysis.html"><strong aria-hidden="true">1.1.</strong> 源代码分析</a></li><li class="chapter-item expanded "><a href="syntax-extensions/ast.html"><strong aria-hidden="true">1.2.</strong> AST 中的宏</a></li><li class="chapter-item expanded "><a href="syntax-extensions/expansion.html"><strong aria-hidden="true">1.3.</strong> 宏展开</a></li><li class="chapter-item expanded "><a href="syntax-extensions/hygiene.html"><strong aria-hidden="true">1.4.</strong> 卫生性</a></li><li class="chapter-item expanded "><a href="syntax-extensions/debugging.html"><strong aria-hidden="true">1.5.</strong> 调试</a></li></ol></li><li class="chapter-item expanded "><a href="decl-macros.html"><strong aria-hidden="true">2.</strong> 声明宏</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="decl-macros/macros-methodical.html"><strong aria-hidden="true">2.1.</strong> 思路</a></li><li class="chapter-item expanded "><a href="decl-macros/macros-practical.html"><strong aria-hidden="true">2.2.</strong> 实战</a></li><li class="chapter-item expanded "><a href="decl-macros/minutiae.html"><strong aria-hidden="true">2.3.</strong> 细节</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="decl-macros/minutiae/fragment-specifiers.html"><strong aria-hidden="true">2.3.1.</strong> 片段分类符</a></li><li class="chapter-item expanded "><a href="decl-macros/minutiae/metavar-and-expansion.html"><strong aria-hidden="true">2.3.2.</strong> 再谈元变量与宏展开</a></li><li class="chapter-item expanded "><a href="decl-macros/minutiae/metavar-expr.html"><strong aria-hidden="true">2.3.3.</strong> 元变量表达式</a></li><li class="chapter-item expanded "><a href="decl-macros/minutiae/hygiene.html"><strong aria-hidden="true">2.3.4.</strong> 宏是部分“卫生的”</a></li><li class="chapter-item expanded "><a href="decl-macros/minutiae/identifiers.html"><strong aria-hidden="true">2.3.5.</strong> 非标识符的“标识符”</a></li><li class="chapter-item expanded "><a href="decl-macros/minutiae/debugging.html"><strong aria-hidden="true">2.3.6.</strong> 调试</a></li><li class="chapter-item expanded "><a href="decl-macros/minutiae/scoping.html"><strong aria-hidden="true">2.3.7.</strong> 作用域</a></li><li class="chapter-item expanded "><a href="decl-macros/minutiae/import-export.html"><strong aria-hidden="true">2.3.8.</strong> 导入/导出宏</a></li><li class="chapter-item expanded "><a href="decl-macros/macros2.html"><strong aria-hidden="true">2.3.9.</strong> macro 2.0</a></li></ol></li><li class="chapter-item expanded "><a href="decl-macros/patterns.html"><strong aria-hidden="true">2.4.</strong> 模式</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="decl-macros/patterns/callbacks.html"><strong aria-hidden="true">2.4.1.</strong> 回调</a></li><li class="chapter-item expanded "><a href="decl-macros/patterns/tt-muncher.html"><strong aria-hidden="true">2.4.2.</strong> tt “撕咬机“</a></li><li class="chapter-item expanded "><a href="decl-macros/patterns/internal-rules.html"><strong aria-hidden="true">2.4.3.</strong> 内用规则</a></li><li class="chapter-item expanded "><a href="decl-macros/patterns/push-down-acc.html"><strong aria-hidden="true">2.4.4.</strong> 下推累积</a></li><li class="chapter-item expanded "><a href="decl-macros/patterns/repetition-replacement.html"><strong aria-hidden="true">2.4.5.</strong> 反复替换</a></li><li class="chapter-item expanded "><a href="decl-macros/patterns/tt-bundling.html"><strong aria-hidden="true">2.4.6.</strong> tt 捆绑</a></li></ol></li><li class="chapter-item expanded "><a href="decl-macros/building-blocks.html"><strong aria-hidden="true">2.5.</strong> 构件</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="decl-macros/building-blocks/ast-coercion.html"><strong aria-hidden="true">2.5.1.</strong> AST 强制转换</a></li><li class="chapter-item expanded "><a href="decl-macros/building-blocks/counting.html"><strong aria-hidden="true">2.5.2.</strong> 计数</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="decl-macros/building-blocks/abacus-counting.html"><strong aria-hidden="true">2.5.2.1.</strong> 算盘计数</a></li></ol></li><li class="chapter-item expanded "><a href="decl-macros/building-blocks/parsing.html"><strong aria-hidden="true">2.5.3.</strong> 解析</a></li></ol></li></ol></li><li class="chapter-item expanded "><a href="proc-macros.html"><strong aria-hidden="true">3.</strong> 过程宏</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="proc-macros/methodical.html"><strong aria-hidden="true">3.1.</strong> 思路</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="proc-macros/methodical/function-like.html"><strong aria-hidden="true">3.1.1.</strong> 函数式</a></li><li class="chapter-item expanded "><a href="proc-macros/methodical/attr.html"><strong aria-hidden="true">3.1.2.</strong> 属性式</a></li><li class="chapter-item expanded "><a href="proc-macros/methodical/derive.html"><strong aria-hidden="true">3.1.3.</strong> derive 式</a></li></ol></li><li class="chapter-item expanded "><div><strong aria-hidden="true">3.2.</strong> 实战</div></li><li class="chapter-item expanded "><a href="proc-macros/third-party-crates.html"><strong aria-hidden="true">3.3.</strong> 第三方 crates</a></li><li class="chapter-item expanded "><a href="proc-macros/hygiene.html"><strong aria-hidden="true">3.4.</strong> 卫生性和 Span</a></li><li class="chapter-item expanded "><div><strong aria-hidden="true">3.5.</strong> 技巧</div></li></ol></li><li class="chapter-item expanded "><a href="translation_statement.html">翻译说明</a></li></ol>
+            </div>
+            <div id="sidebar-resize-handle" class="sidebar-resize-handle"></div>
+        </nav>
+
+        <div id="page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                <div id="menu-bar-hover-placeholder"></div>
+                <div id="menu-bar" class="menu-bar sticky bordered">
+                    <div class="left-buttons">
+                        <button id="sidebar-toggle" class="icon-button" type="button" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="sidebar">
+                            <i class="fa fa-bars"></i>
+                        </button>
+                        <button id="theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="theme-list">
+                            <i class="fa fa-paint-brush"></i>
+                        </button>
+                        <ul id="theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="light">Light</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="ayu">Ayu (default)</button></li>
+                        </ul>
+                        <button id="search-toggle" class="icon-button" type="button" title="Search. (Shortkey: s)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="S" aria-controls="searchbar">
+                            <i class="fa fa-search"></i>
+                        </button>
+                    </div>
+
+                    <h1 class="menu-title">The Little Book of Rust Macros （Rust 宏小册）</h1>
+
+                    <div class="right-buttons">
+                        <a href="https://github.com/zjp-CN/tlborm" title="Git repository" aria-label="Git repository">
+                            <i id="git-repository-button" class="fa fa-github"></i>
+                        </a>
+
+                    </div>
+                </div>
+
+                <div id="search-wrapper" class="hidden">
+                    <form id="searchbar-outer" class="searchbar-outer">
+                        <input type="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
+                    </form>
+                    <div id="searchresults-outer" class="searchresults-outer hidden">
+                        <div id="searchresults-header" class="searchresults-header"></div>
+                        <ul id="searchresults">
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script type="text/javascript">
+                    document.getElementById('sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="content" class="content">
+                    <main>
+                        <!-- Page table of contents -->
+                        <div class="sidetoc"><nav class="pagetoc"></nav></div>
+
+                        <!-- Page table of contents -->
+                        <div class="sidetoc"><nav class="pagetoc"></nav></div>
+
+                        <!-- Page table of contents -->
+                        <div class="sidetoc"><nav class="pagetoc"></nav></div>
+
+                        <!-- Page table of contents -->
+                        <div class="sidetoc"><nav class="pagetoc"></nav></div>
+
+                        <!-- Page table of contents -->
+                        <div class="sidetoc"><nav class="pagetoc"></nav></div>
+
+                        <!-- Page table of contents -->
+                        <div class="sidetoc"><nav class="pagetoc"></nav></div>
+
+                        <!-- Page table of contents -->
+                        <div class="sidetoc"><nav class="pagetoc"></nav></div>
+
+                        <!-- Page table of contents -->
+                        <div class="sidetoc"><nav class="pagetoc"></nav></div>
+
+                        <!-- Page table of contents -->
+                        <div class="sidetoc"><nav class="pagetoc"></nav></div>
+
+                        <!-- Page table of contents -->
+                        <div class="sidetoc"><nav class="pagetoc"></nav></div>
+
+                        <!-- Page table of contents -->
+                        <div class="sidetoc"><nav class="pagetoc"></nav></div>
+
+                        <!-- Page table of contents -->
+                        <div class="sidetoc"><nav class="pagetoc"></nav></div>
+
+                        <!-- Page table of contents -->
+                        <div class="sidetoc"><nav class="pagetoc"></nav></div>
+
+                        <!-- Page table of contents -->
+                        <div class="sidetoc"><nav class="pagetoc"></nav></div>
+
+                        <!-- Page table of contents -->
+                        <div class="sidetoc"><nav class="pagetoc"></nav></div>
+
+                        <!-- Page table of contents -->
+                        <div class="sidetoc"><nav class="pagetoc"></nav></div>
+
+                        <!-- Page table of contents -->
+                        <div class="sidetoc"><nav class="pagetoc"></nav></div>
+
+                        <!-- Page table of contents -->
+                        <div class="sidetoc"><nav class="pagetoc"></nav></div>
+
+                        <!-- Page table of contents -->
+                        <div class="sidetoc"><nav class="pagetoc"></nav></div>
+
+                        <!-- Page table of contents -->
+                        <div class="sidetoc"><nav class="pagetoc"></nav></div>
+
+                        <!-- Page table of contents -->
+                        <div class="sidetoc"><nav class="pagetoc"></nav></div>
+
+                        <!-- Page table of contents -->
+                        <div class="sidetoc"><nav class="pagetoc"></nav></div>
+
+                        <!-- Page table of contents -->
+                        <div class="sidetoc"><nav class="pagetoc"></nav></div>
+
+                        <!-- Page table of contents -->
+                        <div class="sidetoc"><nav class="pagetoc"></nav></div>
+
+                        <!-- Page table of contents -->
+                        <div class="sidetoc"><nav class="pagetoc"></nav></div>
+
+                        <!-- Page table of contents -->
+                        <div class="sidetoc"><nav class="pagetoc"></nav></div>
+
+                        <!-- Page table of contents -->
+                        <div class="sidetoc"><nav class="pagetoc"></nav></div>
+
+                        <!-- Page table of contents -->
+                        <div class="sidetoc"><nav class="pagetoc"></nav></div>
+
+                        <!-- Page table of contents -->
+                        <div class="sidetoc"><nav class="pagetoc"></nav></div>
+
+                        <!-- Page table of contents -->
+                        <div class="sidetoc"><nav class="pagetoc"></nav></div>
+
+                        <h1 id="再谈元变量与宏展开"><a class="header" href="#再谈元变量与宏展开">再谈元变量与宏展开</a></h1>
+<h2 id="书写宏规则的顺序"><a class="header" href="#书写宏规则的顺序">书写宏规则的顺序</a></h2>
+<p>一旦语法分析器开始消耗标记以匹配某捕获，整个过程便 <strong>无法停止或回溯</strong> 。
+这意味着，无论输入是什么样的，下面这个宏的第二项规则将永远无法被匹配到：</p>
+<pre><pre class="playground"><code class="language-rust editable">macro_rules! dead_rule {
+    ($e:expr) =&gt; { ... };
+    ($i:ident +) =&gt; { ... };
+}
+
+fn main() {
+    dead_rule!(x+);
+}</code></pre></pre>
+<p>考虑当以 <code>dead_rule!(x+)</code> 形式调用此宏时，将会发生什么。
+解析器将从第一条规则开始试图进行匹配：它试图将输入解析为一个表达式。
+第一个标记 <code>x</code> 作为表达式是有效的，第二个标记——作为二元加符号 <code>+</code> 的节点——在表达式中也是有效的。</p>
+<p>由此你可能会以为，由于输入中并不包含二元加号 <code>+</code> 的右侧元素，
+分析器将会放弃尝试这一规则，转而尝试下一条规则。
+实则不然：分析器将会 panic 并终止整个编译过程，最终返回一个语法错误。</p>
+<p>由于分析器的这一特点，下面这点尤为重要：
+一般而言，在书写宏规则时，<strong>应从最具体的开始写起，依次写直到最不具体的</strong> 。</p>
+<h2 id="片段分类符的跟随限制"><a class="header" href="#片段分类符的跟随限制">片段分类符的跟随限制</a></h2>
+<p>为防止将来的语法变动影响宏输入的解析方式，
+<code>macro_rules!</code> 对紧接元变量后的内容施加了限制。
+在 Rust 1.52 中，能够紧跟片段分类符后面的内容具有如下限制<sup class="footnote-reference"><a href="#Follow-set Ambiguity Restrictions">1</a></sup>：</p>
+<ul>
+<li><a href="./fragment-specifiers.html#stmt"><code>stmt</code></a> 和 <a href="./fragment-specifiers.html#expr"><code>expr</code></a>：<code>=&gt;</code>、<code>,</code>、<code>;</code> 之一</li>
+<li><a href="./fragment-specifiers.html#pat"><code>pat</code></a>：<code>=&gt;</code>、<code>,</code>、<code>=</code>、<code>if</code>、<code>in</code> 之一<sup class="footnote-reference"><a href="#pat-edition">2</a></sup></li>
+<li>[<code>pat_param</code>]：<code>=&gt;</code>、<code>,</code>、<code>=</code>、<code>|</code>、<code>if</code>、<code>in</code> 之一</li>
+<li><a href="./fragment-specifiers.html#path"><code>path</code></a> 和 <a href="./fragment-specifiers.html#ty"><code>ty</code></a>：<code>=&gt;</code>、<code>,</code>、<code>=</code>、<code>|</code>、<code>;</code>、<code>:</code>、<code>&gt;</code>、<code>&gt;&gt;</code>、<code>[</code>、<code>{</code>、<code>as</code>、<code>where</code> 之一；
+或者 <a href="./fragment-specifiers.html#block"><code>block</code></a> 型的元变量</li>
+<li><a href="./fragment-specifiers.html#vis"><code>vis</code></a>：<code>,</code>、除了 <code>priv</code> 之外的标识符、任何以类型开头的标记、
+<a href="./fragment-specifiers.html#ident"><code>ident</code></a> 或 <a href="./fragment-specifiers.html#ty"><code>ty</code></a> 或 <a href="./fragment-specifiers.html#path"><code>path</code></a> 型的元变量</li>
+<li>其他片段分类符所跟的内容无限制</li>
+</ul>
+<div class="footnote-definition" id="pat-edition"><sup class="footnote-definition-label">2</sup>
+<p>使用 2021 edition 之前的 Rust，<code>pat</code> 依然可以跟随 <code>|</code>。</p>
+</div>
+<p>反复匹配的情况也遵循这些限制<sup class="footnote-reference"><a href="#Follow-set Ambiguity Restrictions">1</a></sup>，也就是说：</p>
+<ol>
+<li>
+<p>如果一个重复操作符（<code>*</code> 或 <code>+</code>）能让一类元变量重复数次，
+那么反复出现的内容就是这类元变量，反复结束之后所接的内容遵照上面的限制。</p>
+</li>
+<li>
+<p>如果一个重复操作符（<code>*</code> 或 <code>?</code>）让一类元变量重复零次，
+那么元变量之后的内容遵照上面的限制。</p>
+</li>
+</ol>
+<div class="footnote-definition" id="Follow-set Ambiguity Restrictions"><sup class="footnote-definition-label">1</sup>
+<p>内容来自于 <em>Reference</em>
+<a href="https://doc.rust-lang.org/reference/macros-by-example.html#follow-set-ambiguity-restrictions">follow-set-ambiguity-restrictions</a> 一节。</p>
+</div>
+<h2 id="编译器拒绝模糊的规则"><a class="header" href="#编译器拒绝模糊的规则">编译器拒绝模糊的规则</a></h2>
+<p>解析器不会预先运行代码，这意味着如果编译器不能一次就唯一地确定如何解析宏调用，
+那么编译器就带着模糊的报错信息而终止运行。
+一个触发终止运行的例子是：</p>
+<pre><pre class="playground"><code class="language-rust editable">macro_rules! ambiguity {
+    ($($i:ident)* $i2:ident) =&gt; { };
+}
+
+// error:
+//    local ambiguity: multiple parsing options: built-in NTs ident ('i') or ident ('i2').
+fn main() { ambiguity!(an_identifier); }</code></pre></pre>
+<p>编译器不会提前看到传入的标识符之后是不是一个 <code>)</code>，如果提前看到的话就会解析正确。</p>
+<h2 id="不基于标记的代换"><a class="header" href="#不基于标记的代换">不基于标记的代换</a></h2>
+<p>关于代换元变量 (substitution，这里指把已经进行宏解析的 token 再次传给宏) ，
+常常让人惊讶的一面是，尽管 <strong>很像</strong> 是根据标记 (token) 进行代换的，但事实并非如此
+——代换基于已经解析的 AST 节点。</p>
+<p>思考下面的例子：</p>
+<pre><pre class="playground"><code class="language-rust editable">macro_rules! capture_then_match_tokens {
+    ($e:expr) =&gt; {match_tokens!($e)};
+}
+
+macro_rules! match_tokens {
+    ($a:tt + $b:tt) =&gt; {"got an addition"};
+    (($i:ident)) =&gt; {"got an identifier"};
+    ($($other:tt)*) =&gt; {"got something else"};
+}
+
+fn main() {
+    println!("{}\n{}\n{}\n",
+        match_tokens!((caravan)),
+        match_tokens!(3 + 6),
+        match_tokens!(5));
+    println!("{}\n{}\n{}",
+        capture_then_match_tokens!((caravan)),
+        capture_then_match_tokens!(3 + 6),
+        capture_then_match_tokens!(5));
+}</code></pre></pre>
+<p>其结果：</p>
+<pre><code class="language-text">got an identifier
+got an addition
+got something else
+
+got something else
+got something else
+got something else
+</code></pre>
+<p>通过解析已经传入 AST 节点的输入，代换的结果变得 <em>很稳定</em>：你再也无法检查其内容了，
+也不再匹配内容。</p>
+<p>另一个例子可能也会很令人困惑：</p>
+<pre><pre class="playground"><code class="language-rust editable">macro_rules! capture_then_what_is {
+    (#[$m:meta]) =&gt; {what_is!(#[$m])};
+}
+
+macro_rules! what_is {
+    (#[no_mangle]) =&gt; {"no_mangle attribute"};
+    (#[inline]) =&gt; {"inline attribute"};
+    ($($tts:tt)*) =&gt; {concat!("something else (", stringify!($($tts)*), ")")};
+}
+
+fn main() {
+    println!(
+        "{}\n{}\n{}\n{}",
+        what_is!(#[no_mangle]),
+        what_is!(#[inline]),
+        capture_then_what_is!(#[no_mangle]),
+        capture_then_what_is!(#[inline]),
+    );
+}</code></pre></pre>
+<p>结果是：</p>
+<pre><code class="language-text">no_mangle attribute
+inline attribute
+something else (#[no_mangle])
+something else (#[inline])
+</code></pre>
+<p>避免这个意外情况的唯一方式就是使用 <a href="./fragment-specifiers.html#tt"><code>tt</code></a>、<a href="./fragment-specifiers.html#ident"><code>ident</code></a> 或者 <a href="./fragment-specifiers.html#lifetime"><code>lifetime</code></a> 分类符。
+每当你捕获到除此之外的分类符，结果将只能被用于直接输出。
+比如这里使用的 <code>stringify!</code><sup class="footnote-reference"><a href="#stringify">3</a></sup>，它是一条内置于编译器的语法拓展
+（<a href="https://doc.rust-lang.org/src/core/macros/mod.rs.html#974-978">查看源码可知</a>），
+将所有输入标记结合在一起，作为单个字符串输出。</p>
+<div class="footnote-definition" id="stringify"><sup class="footnote-definition-label">3</sup>
+<p>这里未包含原作对 <code>stringify!</code> 用于替换 (substitution) 场景的 <a href="https://danielkeep.github.io/tlborm/book/mbe-min-captures-and-expansion-redux.html">解读</a>，因为那个例子的结果有些变化。</p>
+</div>
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+                            <a rel="prev" href="../../decl-macros/minutiae/fragment-specifiers.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                                <i class="fa fa-angle-left"></i>
+                            </a>
+
+                            <a rel="next" href="../../decl-macros/minutiae/metavar-expr.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                                <i class="fa fa-angle-right"></i>
+                            </a>
+
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                    <a rel="prev" href="../../decl-macros/minutiae/fragment-specifiers.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                        <i class="fa fa-angle-left"></i>
+                    </a>
+
+                    <a rel="next" href="../../decl-macros/minutiae/metavar-expr.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                        <i class="fa fa-angle-right"></i>
+                    </a>
+            </nav>
+
+        </div>
+
+
+
+
+        <script type="text/javascript">
+            window.playground_copyable = true;
+        </script>
+
+        <script src="../../ace.js" type="text/javascript" charset="utf-8"></script>
+        <script src="../../editor.js" type="text/javascript" charset="utf-8"></script>
+        <script src="../../mode-rust.js" type="text/javascript" charset="utf-8"></script>
+        <script src="../../theme-dawn.js" type="text/javascript" charset="utf-8"></script>
+        <script src="../../theme-tomorrow_night.js" type="text/javascript" charset="utf-8"></script>
+
+        <script src="../../elasticlunr.min.js" type="text/javascript" charset="utf-8"></script>
+        <script src="../../mark.min.js" type="text/javascript" charset="utf-8"></script>
+        <script src="../../searcher.js" type="text/javascript" charset="utf-8"></script>
+
+        <script src="../../clipboard.min.js" type="text/javascript" charset="utf-8"></script>
+        <script src="../../highlight.js" type="text/javascript" charset="utf-8"></script>
+        <script src="../../book.js" type="text/javascript" charset="utf-8"></script>
+
+        <!-- Custom JS scripts -->
+        <script type="text/javascript" src="../../theme/pagetoc.js"></script>
+
+
+    </body>
+</html>

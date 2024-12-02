@@ -1,0 +1,678 @@
+<!DOCTYPE HTML>
+<html lang="zh" class="sidebar-visible no-js ayu">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>片段分类符 - The Little Book of Rust Macros （Rust 宏小册）</title>
+
+
+        <!-- Custom HTML head -->
+
+        <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff" />
+
+        <link rel="icon" href="../../favicon.svg">
+        <link rel="shortcut icon" href="../../favicon.png">
+        <link rel="stylesheet" href="../../css/variables.css">
+        <link rel="stylesheet" href="../../css/general.css">
+        <link rel="stylesheet" href="../../css/chrome.css">
+
+        <!-- Fonts -->
+        <link rel="stylesheet" href="../../FontAwesome/css/font-awesome.css">
+        <link rel="stylesheet" href="../../fonts/fonts.css">
+
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" href="../../highlight.css">
+        <link rel="stylesheet" href="../../tomorrow-night.css">
+        <link rel="stylesheet" href="../../ayu-highlight.css">
+
+        <!-- Custom theme stylesheets -->
+        <link rel="stylesheet" href="../../theme/pagetoc.css">
+        <link rel="stylesheet" href="../../theme/rust-syntax-bg-highlight.css">
+
+        <!-- MathJax -->
+        <script async type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    </head>
+    <body>
+        <!-- Provide site root to javascript -->
+        <script type="text/javascript">
+            var path_to_root = "../../";
+            var default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? "navy" : "ayu";
+        </script>
+
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script type="text/javascript">
+            try {
+                var theme = localStorage.getItem('mdbook-theme');
+                var sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script type="text/javascript">
+            var theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
+            if (theme === null || theme === undefined) { theme = default_theme; }
+            var html = document.querySelector('html');
+            html.classList.remove('no-js')
+            html.classList.remove('ayu')
+            html.classList.add(theme);
+            html.classList.add('js');
+        </script>
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script type="text/javascript">
+            var html = document.querySelector('html');
+            var sidebar = 'hidden';
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            }
+            html.classList.remove('sidebar-visible');
+            html.classList.add("sidebar-" + sidebar);
+        </script>
+
+        <nav id="sidebar" class="sidebar" aria-label="Table of contents">
+            <div class="sidebar-scrollbox">
+                <ol class="chapter"><li class="chapter-item expanded affix "><a href="introduction.html">简介</a></li><li class="chapter-item expanded "><a href="syntax-extensions.html"><strong aria-hidden="true">1.</strong> 语法拓展</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="syntax-extensions/source-analysis.html"><strong aria-hidden="true">1.1.</strong> 源代码分析</a></li><li class="chapter-item expanded "><a href="syntax-extensions/ast.html"><strong aria-hidden="true">1.2.</strong> AST 中的宏</a></li><li class="chapter-item expanded "><a href="syntax-extensions/expansion.html"><strong aria-hidden="true">1.3.</strong> 宏展开</a></li><li class="chapter-item expanded "><a href="syntax-extensions/hygiene.html"><strong aria-hidden="true">1.4.</strong> 卫生性</a></li><li class="chapter-item expanded "><a href="syntax-extensions/debugging.html"><strong aria-hidden="true">1.5.</strong> 调试</a></li></ol></li><li class="chapter-item expanded "><a href="decl-macros.html"><strong aria-hidden="true">2.</strong> 声明宏</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="decl-macros/macros-methodical.html"><strong aria-hidden="true">2.1.</strong> 思路</a></li><li class="chapter-item expanded "><a href="decl-macros/macros-practical.html"><strong aria-hidden="true">2.2.</strong> 实战</a></li><li class="chapter-item expanded "><a href="decl-macros/minutiae.html"><strong aria-hidden="true">2.3.</strong> 细节</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="decl-macros/minutiae/fragment-specifiers.html"><strong aria-hidden="true">2.3.1.</strong> 片段分类符</a></li><li class="chapter-item expanded "><a href="decl-macros/minutiae/metavar-and-expansion.html"><strong aria-hidden="true">2.3.2.</strong> 再谈元变量与宏展开</a></li><li class="chapter-item expanded "><a href="decl-macros/minutiae/metavar-expr.html"><strong aria-hidden="true">2.3.3.</strong> 元变量表达式</a></li><li class="chapter-item expanded "><a href="decl-macros/minutiae/hygiene.html"><strong aria-hidden="true">2.3.4.</strong> 宏是部分“卫生的”</a></li><li class="chapter-item expanded "><a href="decl-macros/minutiae/identifiers.html"><strong aria-hidden="true">2.3.5.</strong> 非标识符的“标识符”</a></li><li class="chapter-item expanded "><a href="decl-macros/minutiae/debugging.html"><strong aria-hidden="true">2.3.6.</strong> 调试</a></li><li class="chapter-item expanded "><a href="decl-macros/minutiae/scoping.html"><strong aria-hidden="true">2.3.7.</strong> 作用域</a></li><li class="chapter-item expanded "><a href="decl-macros/minutiae/import-export.html"><strong aria-hidden="true">2.3.8.</strong> 导入/导出宏</a></li><li class="chapter-item expanded "><a href="decl-macros/macros2.html"><strong aria-hidden="true">2.3.9.</strong> macro 2.0</a></li></ol></li><li class="chapter-item expanded "><a href="decl-macros/patterns.html"><strong aria-hidden="true">2.4.</strong> 模式</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="decl-macros/patterns/callbacks.html"><strong aria-hidden="true">2.4.1.</strong> 回调</a></li><li class="chapter-item expanded "><a href="decl-macros/patterns/tt-muncher.html"><strong aria-hidden="true">2.4.2.</strong> tt “撕咬机“</a></li><li class="chapter-item expanded "><a href="decl-macros/patterns/internal-rules.html"><strong aria-hidden="true">2.4.3.</strong> 内用规则</a></li><li class="chapter-item expanded "><a href="decl-macros/patterns/push-down-acc.html"><strong aria-hidden="true">2.4.4.</strong> 下推累积</a></li><li class="chapter-item expanded "><a href="decl-macros/patterns/repetition-replacement.html"><strong aria-hidden="true">2.4.5.</strong> 反复替换</a></li><li class="chapter-item expanded "><a href="decl-macros/patterns/tt-bundling.html"><strong aria-hidden="true">2.4.6.</strong> tt 捆绑</a></li></ol></li><li class="chapter-item expanded "><a href="decl-macros/building-blocks.html"><strong aria-hidden="true">2.5.</strong> 构件</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="decl-macros/building-blocks/ast-coercion.html"><strong aria-hidden="true">2.5.1.</strong> AST 强制转换</a></li><li class="chapter-item expanded "><a href="decl-macros/building-blocks/counting.html"><strong aria-hidden="true">2.5.2.</strong> 计数</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="decl-macros/building-blocks/abacus-counting.html"><strong aria-hidden="true">2.5.2.1.</strong> 算盘计数</a></li></ol></li><li class="chapter-item expanded "><a href="decl-macros/building-blocks/parsing.html"><strong aria-hidden="true">2.5.3.</strong> 解析</a></li></ol></li></ol></li><li class="chapter-item expanded "><a href="proc-macros.html"><strong aria-hidden="true">3.</strong> 过程宏</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="proc-macros/methodical.html"><strong aria-hidden="true">3.1.</strong> 思路</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="proc-macros/methodical/function-like.html"><strong aria-hidden="true">3.1.1.</strong> 函数式</a></li><li class="chapter-item expanded "><a href="proc-macros/methodical/attr.html"><strong aria-hidden="true">3.1.2.</strong> 属性式</a></li><li class="chapter-item expanded "><a href="proc-macros/methodical/derive.html"><strong aria-hidden="true">3.1.3.</strong> derive 式</a></li></ol></li><li class="chapter-item expanded "><div><strong aria-hidden="true">3.2.</strong> 实战</div></li><li class="chapter-item expanded "><a href="proc-macros/third-party-crates.html"><strong aria-hidden="true">3.3.</strong> 第三方 crates</a></li><li class="chapter-item expanded "><a href="proc-macros/hygiene.html"><strong aria-hidden="true">3.4.</strong> 卫生性和 Span</a></li><li class="chapter-item expanded "><div><strong aria-hidden="true">3.5.</strong> 技巧</div></li></ol></li><li class="chapter-item expanded "><a href="translation_statement.html">翻译说明</a></li></ol>
+            </div>
+            <div id="sidebar-resize-handle" class="sidebar-resize-handle"></div>
+        </nav>
+
+        <div id="page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                <div id="menu-bar-hover-placeholder"></div>
+                <div id="menu-bar" class="menu-bar sticky bordered">
+                    <div class="left-buttons">
+                        <button id="sidebar-toggle" class="icon-button" type="button" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="sidebar">
+                            <i class="fa fa-bars"></i>
+                        </button>
+                        <button id="theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="theme-list">
+                            <i class="fa fa-paint-brush"></i>
+                        </button>
+                        <ul id="theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="light">Light</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="ayu">Ayu (default)</button></li>
+                        </ul>
+                        <button id="search-toggle" class="icon-button" type="button" title="Search. (Shortkey: s)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="S" aria-controls="searchbar">
+                            <i class="fa fa-search"></i>
+                        </button>
+                    </div>
+
+                    <h1 class="menu-title">The Little Book of Rust Macros （Rust 宏小册）</h1>
+
+                    <div class="right-buttons">
+                        <a href="https://github.com/zjp-CN/tlborm" title="Git repository" aria-label="Git repository">
+                            <i id="git-repository-button" class="fa fa-github"></i>
+                        </a>
+
+                    </div>
+                </div>
+
+                <div id="search-wrapper" class="hidden">
+                    <form id="searchbar-outer" class="searchbar-outer">
+                        <input type="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
+                    </form>
+                    <div id="searchresults-outer" class="searchresults-outer hidden">
+                        <div id="searchresults-header" class="searchresults-header"></div>
+                        <ul id="searchresults">
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script type="text/javascript">
+                    document.getElementById('sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="content" class="content">
+                    <main>
+                        <!-- Page table of contents -->
+                        <div class="sidetoc"><nav class="pagetoc"></nav></div>
+
+                        <!-- Page table of contents -->
+                        <div class="sidetoc"><nav class="pagetoc"></nav></div>
+
+                        <!-- Page table of contents -->
+                        <div class="sidetoc"><nav class="pagetoc"></nav></div>
+
+                        <!-- Page table of contents -->
+                        <div class="sidetoc"><nav class="pagetoc"></nav></div>
+
+                        <!-- Page table of contents -->
+                        <div class="sidetoc"><nav class="pagetoc"></nav></div>
+
+                        <!-- Page table of contents -->
+                        <div class="sidetoc"><nav class="pagetoc"></nav></div>
+
+                        <!-- Page table of contents -->
+                        <div class="sidetoc"><nav class="pagetoc"></nav></div>
+
+                        <!-- Page table of contents -->
+                        <div class="sidetoc"><nav class="pagetoc"></nav></div>
+
+                        <!-- Page table of contents -->
+                        <div class="sidetoc"><nav class="pagetoc"></nav></div>
+
+                        <!-- Page table of contents -->
+                        <div class="sidetoc"><nav class="pagetoc"></nav></div>
+
+                        <!-- Page table of contents -->
+                        <div class="sidetoc"><nav class="pagetoc"></nav></div>
+
+                        <!-- Page table of contents -->
+                        <div class="sidetoc"><nav class="pagetoc"></nav></div>
+
+                        <!-- Page table of contents -->
+                        <div class="sidetoc"><nav class="pagetoc"></nav></div>
+
+                        <!-- Page table of contents -->
+                        <div class="sidetoc"><nav class="pagetoc"></nav></div>
+
+                        <!-- Page table of contents -->
+                        <div class="sidetoc"><nav class="pagetoc"></nav></div>
+
+                        <!-- Page table of contents -->
+                        <div class="sidetoc"><nav class="pagetoc"></nav></div>
+
+                        <!-- Page table of contents -->
+                        <div class="sidetoc"><nav class="pagetoc"></nav></div>
+
+                        <!-- Page table of contents -->
+                        <div class="sidetoc"><nav class="pagetoc"></nav></div>
+
+                        <!-- Page table of contents -->
+                        <div class="sidetoc"><nav class="pagetoc"></nav></div>
+
+                        <!-- Page table of contents -->
+                        <div class="sidetoc"><nav class="pagetoc"></nav></div>
+
+                        <!-- Page table of contents -->
+                        <div class="sidetoc"><nav class="pagetoc"></nav></div>
+
+                        <!-- Page table of contents -->
+                        <div class="sidetoc"><nav class="pagetoc"></nav></div>
+
+                        <!-- Page table of contents -->
+                        <div class="sidetoc"><nav class="pagetoc"></nav></div>
+
+                        <!-- Page table of contents -->
+                        <div class="sidetoc"><nav class="pagetoc"></nav></div>
+
+                        <!-- Page table of contents -->
+                        <div class="sidetoc"><nav class="pagetoc"></nav></div>
+
+                        <!-- Page table of contents -->
+                        <div class="sidetoc"><nav class="pagetoc"></nav></div>
+
+                        <!-- Page table of contents -->
+                        <div class="sidetoc"><nav class="pagetoc"></nav></div>
+
+                        <!-- Page table of contents -->
+                        <div class="sidetoc"><nav class="pagetoc"></nav></div>
+
+                        <!-- Page table of contents -->
+                        <div class="sidetoc"><nav class="pagetoc"></nav></div>
+
+                        <!-- Page table of contents -->
+                        <div class="sidetoc"><nav class="pagetoc"></nav></div>
+
+                        <h1 id="片段分类符"><a class="header" href="#片段分类符">片段分类符</a></h1>
+<p>正如在 <a href="../macros-methodical.html">思路</a> 一章看到的，截至 1.60 版本， Rust 已有
+14 个片段分类符 (Fragment Specifiers，以下简称分类符)<sup class="footnote-reference"><a href="#metavariables">1</a></sup>。</p>
+<p>这一节会更深入地探讨他们之中的细节，每次都会展示几个匹配的例子。</p>
+<blockquote>
+<p>注意：除了 <code>ident</code>、<code>lifetime</code> 和 <code>tt</code> 分类符之外，其余的分类符在匹配后生成的
+AST 是不清楚的 (opaque)，这使得在之后的宏调用时不可能检查 (inspect) 捕获的结果。<sup class="footnote-reference"><a href="#opaque">2</a></sup></p>
+</blockquote>
+<ul>
+<li><a href="#block"><code>block</code></a></li>
+<li><a href="#expr"><code>expr</code></a></li>
+<li><a href="#ident"><code>ident</code></a></li>
+<li><a href="#item"><code>item</code></a></li>
+<li><a href="#lifetime"><code>lifetime</code></a></li>
+<li><a href="#literal"><code>literal</code></a></li>
+<li><a href="#meta"><code>meta</code></a></li>
+<li><a href="#pat"><code>pat</code></a></li>
+<li><a href="#pat_param"><code>pat_param</code></a></li>
+<li><a href="#path"><code>path</code></a></li>
+<li><a href="#stmt"><code>stmt</code></a></li>
+<li><a href="#tt"><code>tt</code></a></li>
+<li><a href="#ty"><code>ty</code></a></li>
+<li><a href="#vis"><code>vis</code></a></li>
+</ul>
+<div class="footnote-definition" id="metavariables"><sup class="footnote-definition-label">1</sup>
+<p>最新内容可参考 <em>Reference</em> 的 <a href="https://doc.rust-lang.org/nightly/reference/macros-by-example.html#metavariables">Metavariables</a> 一节。</p>
+</div>
+<div class="footnote-definition" id="opaque"><sup class="footnote-definition-label">2</sup>
+<p>推荐通过 rust quiz <a href="https://dtolnay.github.io/rust-quiz/9">#9</a> 来理解这句话。</p>
+</div>
+<h2 id="block"><a class="header" href="#block"><code>block</code></a></h2>
+<p><code>block</code> 分类符只匹配
+<a href="https://doc.rust-lang.org/reference/expressions/block-expr.html">block 表达式</a>。</p>
+<p>块 (block) 由 <code>{</code> 开始，接着是一些语句，最后是可选的表达式，然后以 <code>}</code> 结束。
+块的类型要么是最后的值表达式类型，要么是 <code>()</code> 类型。</p>
+<pre><pre class="playground"><code class="language-rust editable">macro_rules! blocks {
+    ($($block:block)*) =&gt; ();
+}
+
+blocks! {
+    {}
+    {
+        let zig;
+    }
+    { 2 }
+}
+fn main() {}</code></pre></pre>
+<h2 id="expr"><a class="header" href="#expr"><code>expr</code></a></h2>
+<p><code>expr</code> 分类符用于匹配任何形式的表达式
+(<a href="https://doc.rust-lang.org/reference/expressions.html">expression</a>)。</p>
+<p>（如果把 Rust 视为面向表达式的语言，那么它有很多种表达式。）</p>
+<pre><pre class="playground"><code class="language-rust editable">macro_rules! expressions {
+    ($($expr:expr)*) =&gt; ();
+}
+
+expressions! {
+    "literal"
+    funcall()
+    future.await
+    break 'foo bar
+}
+fn main() {}</code></pre></pre>
+<h2 id="ident"><a class="header" href="#ident"><code>ident</code></a></h2>
+<p><code>ident</code> 分类符用于匹配任何形式的标识符
+(<a href="https://doc.rust-lang.org/reference/identifiers.html">identifier</a>) 或者关键字。
+。</p>
+<pre><pre class="playground"><code class="language-rust editable">macro_rules! idents {
+    ($($ident:ident)*) =&gt; ();
+}
+
+idents! {
+    // _ &lt;- `_` 不是标识符，而是一种模式
+    foo
+    async
+    O_________O
+    _____O_____
+}
+fn main() {}</code></pre></pre>
+<h2 id="item"><a class="header" href="#item"><code>item</code></a></h2>
+<p><code>item</code> 分类符只匹配 Rust 的 <a href="https://doc.rust-lang.org/reference/items.html">item</a>
+的 <strong>定义</strong> (definitions) ，
+不会匹配指向 item 的标识符 (identifiers)。例子：</p>
+<pre><pre class="playground"><code class="language-rust editable">macro_rules! items {
+    ($($item:item)*) =&gt; ();
+}
+
+items! {
+    struct Foo;
+    enum Bar {
+        Baz
+    }
+    impl Foo {}
+    /*...*/
+}
+fn main() {}</code></pre></pre>
+<p><a href="https://doc.rust-lang.org/reference/items.html"><code>item</code></a>
+是在编译时完全确定的，通常在程序执行期间保持固定，并且可以驻留在只读存储器中。具体指：</p>
+<ul>
+<li><a href="https://doc.rust-lang.org/reference/items/modules.html">modules</a></li>
+<li><a href="https://doc.rust-lang.org/reference/items/extern-crates.html"><code>extern crate</code> declarations</a></li>
+<li><a href="https://doc.rust-lang.org/reference/items/use-declarations.html"><code>use</code> declarations</a></li>
+<li><a href="https://doc.rust-lang.org/reference/items/functions.html">function definitions</a></li>
+<li><a href="https://doc.rust-lang.org/reference/items/type-aliases.html">type definitions</a></li>
+<li><a href="https://doc.rust-lang.org/reference/items/structs.html">struct definitions</a></li>
+<li><a href="https://doc.rust-lang.org/reference/items/enumerations.html">enumeration definitions</a></li>
+<li><a href="https://doc.rust-lang.org/reference/items/unions.html">union definitions</a></li>
+<li><a href="https://doc.rust-lang.org/reference/items/constant-items.html">constant items</a></li>
+<li><a href="https://doc.rust-lang.org/reference/items/static-items.html">static items</a></li>
+<li><a href="https://doc.rust-lang.org/reference/items/traits.html">trait definitions</a></li>
+<li><a href="https://doc.rust-lang.org/reference/items/implementations.html">implementations</a></li>
+<li><a href="https://doc.rust-lang.org/reference/items/external-blocks.html"><code>extern</code> blocks</a></li>
+</ul>
+<h2 id="lifetime"><a class="header" href="#lifetime"><code>lifetime</code></a></h2>
+<p><code>lifetime</code> 分类符用于匹配生命周期注解或者标签
+(<a href="https://doc.rust-lang.org/reference/tokens.html#lifetimes-and-loop-labels">lifetime or label</a>)。
+它与 <a href="#ident"><code>ident</code></a> 很像，但是 <code>lifetime</code> 会匹配到前缀 <code>''</code> 。</p>
+<pre><pre class="playground"><code class="language-rust editable">macro_rules! lifetimes {
+    ($($lifetime:lifetime)*) =&gt; ();
+}
+
+lifetimes! {
+    'static
+    'shiv
+    '_
+}
+fn main() {}</code></pre></pre>
+<h2 id="literal"><a class="header" href="#literal"><code>literal</code></a></h2>
+<p><code>literal</code> 分类符用于匹配字面表达式
+(<a href="https://doc.rust-lang.org/reference/expressions/literal-expr.html">literal expression</a>)。</p>
+<pre><pre class="playground"><code class="language-rust editable">macro_rules! literals {
+    ($($literal:literal)*) =&gt; ();
+}
+
+literals! {
+    -1
+    "hello world"
+    2.3
+    b'b'
+    true
+}
+fn main() {}</code></pre></pre>
+<h2 id="meta"><a class="header" href="#meta"><code>meta</code></a></h2>
+<p><code>meta</code> 分类符用于匹配属性 (<a href="https://doc.rust-lang.org/reference/attributes.html">attribute</a>)，
+准确地说是属性里面的内容。通常你会在 <code>#[$meta:meta]</code> 或 <code>#![$meta:meta]</code> 模式匹配中
+看到这个分类符。</p>
+<pre><pre class="playground"><code class="language-rust editable">macro_rules! metas {
+    ($($meta:meta)*) =&gt; ();
+}
+
+metas! {
+    ASimplePath
+    super::man
+    path = "home"
+    foo(bar)
+}
+fn main() {}</code></pre></pre>
+<blockquote>
+<p>针对文档注释简单说一句：
+文档注释其实是具有 <code>#[doc="…"]</code> 形式的属性，<code>...</code> 实际上就是注释字符串，
+这意味着你可以在在宏里面操作文档注释！</p>
+</blockquote>
+<h2 id="pat"><a class="header" href="#pat"><code>pat</code></a></h2>
+<p><code>pat</code> 分类符用于匹配任何形式的模式
+(<a href="https://doc.rust-lang.org/reference/patterns.html">pattern</a>)，包括 2021 edition
+开始的 <a href="https://doc.rust-lang.org/reference/patterns.html#or-patterns">or-patterns</a>。</p>
+<pre><pre class="playground"><code class="language-rust editable edition2021">macro_rules! patterns {
+    ($($pat:pat)*) =&gt; ();
+}
+
+patterns! {
+    "literal"
+    _
+    0..5
+    ref mut PatternsAreNice
+    0 | 1 | 2 | 3 
+}
+fn main() {}</code></pre></pre>
+<h2 id="pat_param"><a class="header" href="#pat_param"><code>pat_param</code></a></h2>
+<p>从 2021 edition 起， or-patterns 模式开始应用，这让 <code>pat</code> 分类符不再允许跟随 <code>|</code>。</p>
+<p>为了避免这个问题或者说恢复旧的 <code>pat</code> 分类符行为，你可以使用 <code>pat_param</code> 片段，它允许
+<code>|</code> 跟在它后面，因为 <code>pat_param</code> 不允许 top level 或 or-patterns。</p>
+<pre><pre class="playground"><code class="language-rust editable edition2021">macro_rules! patterns {
+    (pat: $pat:pat) =&gt; {
+        println!("pat: {}", stringify!($pat));
+    };
+    (pat_param: $($pat:pat_param)|+) =&gt; {
+        $( println!("pat_param: {}", stringify!($pat)); )+
+    };
+}
+fn main() {
+    patterns! {
+       pat: 0 | 1 | 2 | 3
+    }
+    patterns! {
+       pat_param: 0 | 1 | 2 | 3
+    }
+}</code></pre></pre>
+<pre><pre class="playground"><code class="language-rust editable edition2021">macro_rules! patterns {
+    ($( $( $pat:pat_param )|+ )*) =&gt; ();
+}
+
+patterns! {
+    "literal"
+    _
+    0..5
+    ref mut PatternsAreNice
+    0 | 1 | 2 | 3 
+}
+fn main() {}</code></pre></pre>
+<h2 id="path"><a class="header" href="#path"><code>path</code></a></h2>
+<p><code>path</code> 分类符用于匹配类型中的路径
+(<a href="https://doc.rust-lang.org/reference/paths.html#paths-in-types">TypePath</a>)。</p>
+<p>这包括函数式的 trait 形式。</p>
+<pre><pre class="playground"><code class="language-rust editable">macro_rules! paths {
+    ($($path:path)*) =&gt; ();
+}
+
+paths! {
+    ASimplePath
+    ::A::B::C::D
+    G::&lt;eneri&gt;::C
+    FnMut(u32) -&gt; ()
+}
+fn main() {}</code></pre></pre>
+<h2 id="stmt"><a class="header" href="#stmt"><code>stmt</code></a></h2>
+<p><code>stmt</code> 分类符只匹配的 语句 (<a href="https://doc.rust-lang.org/reference/statements.html">statement</a>)。
+除非 item 语句要求结尾有分号，否则 <strong>不会</strong> 匹配语句最后的分号。</p>
+<p>什么叫 item 语句要求结尾有分号呢？单元结构体 (Unit-Struct) 就是一个简单的例子，
+因为它定义中必须带上结尾的分号。</p>
+<p>赶紧用例子展示上面说的是啥意思吧。下面的宏只给出它所捕获的内容，因为有几行不能通过编译。</p>
+<pre><pre class="playground"><code class="language-rust editable">macro_rules! statements {
+    ($($stmt:stmt)*) =&gt; ($($stmt)*);
+}
+
+fn main() {
+    statements! {
+        struct Foo;
+        fn foo() {}
+        let zig = 3
+        let zig = 3;
+        3
+        3;
+        if true {} else {}
+        {}
+    }
+}</code></pre></pre>
+<p>你可以根据报错内容试着删除不能编译的代码，结合 <a href="#stmt"><code>stmt</code></a> 小节开头的文字再琢磨琢磨。
+你如果正浏览使用 mdbook 渲染的页面，那么可以直接运行和修改这段代码。</p>
+<p>虽然源代码编译失败，但是我们可以展开宏<sup class="footnote-reference"><a href="#debugging">3</a></sup>，
+使用 <a href="https://play.rust-lang.org/">playground</a> 的
+<code>Expand macros</code> 工具 (tool)；或者把代码复制到本地，在 nightly Rust 版本中使用
+<code>cargo rustc -- -Zunstable-options --pretty=expanded</code> 命令得到宏展开结果：</p>
+<pre><code class="language-rust ignore"><span class="boring">warning: unnecessary trailing semicolon
+</span><span class="boring">  --&gt; src/main.rs:10:20
+</span><span class="boring">   |
+</span><span class="boring">10 |         let zig = 3;
+</span><span class="boring">   |                    ^ help: remove this semicolon
+</span><span class="boring">   |
+</span><span class="boring">   = note: `#[warn(redundant_semicolons)]` on by default
+</span><span class="boring">
+</span><span class="boring">warning: unnecessary trailing semicolon
+</span><span class="boring">  --&gt; src/main.rs:12:10
+</span><span class="boring">   |
+</span><span class="boring">12 |         3;
+</span><span class="boring">   |          ^ help: remove this semicolon
+</span><span class="boring">
+</span><span class="boring">#![feature(prelude_import)]
+</span><span class="boring">#[prelude_import]
+</span><span class="boring">use std::prelude::rust_2018::*;
+</span><span class="boring">#[macro_use]
+</span><span class="boring">extern crate std;
+</span><span class="boring">macro_rules! statements { ($ ($ stmt : stmt) *) =&gt; ($ ($ stmt) *) ; }
+</span>
+fn main() {
+    struct Foo;
+    fn foo() { }
+    let zig = 3;
+    let zig = 3;
+    ;
+    3;
+    3;
+    ;
+    if true { } else { }
+    { }
+}</code></pre>
+<p>由此我们知道：</p>
+<ol>
+<li>
+<p>虽然 <code>stmt</code> 分类符没有捕获语句末尾的分号，但它依然在所需的时候返回了 (emit)
+语句。原因很简单，分号本身就是有效的语句。所以我们实际输入 10 个语句调用了宏，而不是 8
+个！这在把多个反复捕获放入一个反复展开时很重要，因为此时反复的次数必须相同。</p>
+</li>
+<li>
+<p>在这里你应该注意到：<code>struct Foo;</code> 被匹配到了。否则我们会看到像其他情况一样有一个额外 <code>;</code>
+语句。由前所述，这能想通：item 语句需要分号，所以这个分号能被匹配到。</p>
+</li>
+<li>
+<p>仅由块表达式或控制流表达式组成的表达式结尾没有分号，
+其余的表达式捕获后产生的表达式会尾随一个分号（在这个例子中，正是这里出错）。</p>
+</li>
+</ol>
+<p>这里提到的细节能在 Reference 的 <a href="https://doc.rust-lang.org/reference/statements.html">statement</a>
+一节中找到。但个细节通常这并不重要，除了要注意反复次数，通常没什么问题。</p>
+<div class="footnote-definition" id="debugging"><sup class="footnote-definition-label">3</sup>
+<p>可阅读 <a href="./debugging.html">调试</a> 一章</p>
+</div>
+<h2 id="tt"><a class="header" href="#tt"><code>tt</code></a></h2>
+<p><code>tt</code> 分类符用于匹配标记树 (TokenTree)。
+如果你是新手，对标记树不了解，那么需要回顾本书
+<a href="../syntax/source-analysys.html#%E6%A0%87%E8%AE%B0%E6%A0%91-token-trees">标记树</a>
+一节。<code>tt</code> 分类符是最有作用的分类符之一，因为它能匹配几乎所有东西，
+而且能够让你在使用宏之后检查 (inspect) 匹配的内容。</p>
+<p>这让你可以编写非常强大的宏技巧，比如
+<a href="../patterns/tt-muncher.html">tt-muncher</a> 和
+<a href="../patterns/push-down-acc.html">push-down-accumulator</a>。</p>
+<h2 id="ty"><a class="header" href="#ty"><code>ty</code></a></h2>
+<p><code>ty</code> 分类符用于匹配任何形式的类型表达式 (<a href="https://doc.rust-lang.org/reference/types.html#type-expressions">type expression</a>)。</p>
+<p>类型表达式是在 Rust 中指代类型的语法。</p>
+<pre><pre class="playground"><code class="language-rust editable">macro_rules! types {
+    ($($type:ty)*) =&gt; ();
+}
+
+types! {
+    foo::bar
+    bool
+    [u8]
+    impl IntoIterator&lt;Item = u32&gt;
+}
+fn main() {}</code></pre></pre>
+<h2 id="vis"><a class="header" href="#vis"><code>vis</code></a></h2>
+<p><code>vis</code> 分类符会匹配 <strong>可能为空</strong> 可见性修饰符 (<a href="https://doc.rust-lang.org/reference/visibility-and-privacy.html">Visibility qualifier</a>)。</p>
+<pre><pre class="playground"><code class="language-rust editable">macro_rules! visibilities {
+    //         ∨~~注意这个逗号，`vis` 分类符自身不会匹配到逗号
+    ($($vis:vis,)*) =&gt; ();
+}
+
+visibilities! {
+    , // 没有 vis 也行，因为 $vis 隐式包含 `?` 的情况
+    pub,
+    pub(crate),
+    pub(in super),
+    pub(in some_path),
+}
+fn main() {}</code></pre></pre>
+<p><code>vis</code> 实际上只支持例子里的几种方式，因为这里的 visibility
+指的是可见性，与私有性相对。而涉及这方面的内容只有与 <code>pub</code>
+的关键字。所以，<code>vis</code> 在关心匹配输入的内容是公有还是私有时有用。</p>
+<p>此外，如果匹配时，其后没有标记流，整个宏会匹配失败：</p>
+<pre><pre class="playground"><code class="language-rust editable">macro_rules! non_optional_vis {
+    ($vis:vis) =&gt; ();
+}
+non_optional_vis!();
+// ^^^^^^^^^^^^^^^^ error: missing tokens in macro arguments
+fn main() {}</code></pre></pre>
+<p>重点在于“可能为空”。你可能想到这是隐藏了 <code>?</code>
+重复操作符的分类符，这样你就不用直接在反复匹配时使用
+<code>?</code> —— 其实你不能将它和 <code>?</code> 一起在重复模式匹配中使用。</p>
+<p>可以匹配 <code>$vis:vis $ident:ident</code>，但不能匹配 <code>$(pub)? $ident:ident</code>，因为 <code>pub</code>
+表明一个有效的标识符，所以后者是模糊不清的。</p>
+<pre><pre class="playground"><code class="language-rust editable">macro_rules! vis_ident {
+    ($vis:vis $ident:ident) =&gt; ();
+}
+vis_ident!(pub foo); // this works fine
+
+macro_rules! pub_ident {
+    ($(pub)? $ident:ident) =&gt; ();
+}
+pub_ident!(pub foo);
+        // ^^^ error: local ambiguity when calling macro `pub_ident`: multiple parsing options: built-in NTs ident ('ident') or 1 other option.
+fn main() {}</code></pre></pre>
+<p>而且，搭配 <code>tt</code> 分类符和递归展开去匹配空标记也会导致有趣而奇怪的事情。</p>
+<p>当 <code>pub</code> 匹配了空标记，元变量依然算一次被捕获，又因为它不是 <code>tt</code>、<code>ident</code> 或
+<code>lifetime</code>，所以再次展开时是不清楚的。</p>
+<p>这意味着如果这种捕获的结果传递给另一个将它视为 <code>tt</code> 的宏调用，你最终得到一棵空的标记树。</p>
+<pre><pre class="playground"><code class="language-rust editable">macro_rules! it_is_opaque {
+    (()) =&gt; { "()" };
+    (($tt:tt)) =&gt; { concat!("$tt is ", stringify!($tt)) };
+    ($vis:vis ,) =&gt; { it_is_opaque!( ($vis) ); }
+}
+fn main() {
+    // this prints "$tt is ", as the recursive calls hits the second branch with
+    // an empty tt, opposed to matching with the first branch!
+    println!("{}", it_is_opaque!(,));
+}</code></pre></pre>
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+                            <a rel="prev" href="../../decl-macros/minutiae.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                                <i class="fa fa-angle-left"></i>
+                            </a>
+
+                            <a rel="next" href="../../decl-macros/minutiae/metavar-and-expansion.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                                <i class="fa fa-angle-right"></i>
+                            </a>
+
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                    <a rel="prev" href="../../decl-macros/minutiae.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                        <i class="fa fa-angle-left"></i>
+                    </a>
+
+                    <a rel="next" href="../../decl-macros/minutiae/metavar-and-expansion.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                        <i class="fa fa-angle-right"></i>
+                    </a>
+            </nav>
+
+        </div>
+
+
+
+
+        <script type="text/javascript">
+            window.playground_copyable = true;
+        </script>
+
+        <script src="../../ace.js" type="text/javascript" charset="utf-8"></script>
+        <script src="../../editor.js" type="text/javascript" charset="utf-8"></script>
+        <script src="../../mode-rust.js" type="text/javascript" charset="utf-8"></script>
+        <script src="../../theme-dawn.js" type="text/javascript" charset="utf-8"></script>
+        <script src="../../theme-tomorrow_night.js" type="text/javascript" charset="utf-8"></script>
+
+        <script src="../../elasticlunr.min.js" type="text/javascript" charset="utf-8"></script>
+        <script src="../../mark.min.js" type="text/javascript" charset="utf-8"></script>
+        <script src="../../searcher.js" type="text/javascript" charset="utf-8"></script>
+
+        <script src="../../clipboard.min.js" type="text/javascript" charset="utf-8"></script>
+        <script src="../../highlight.js" type="text/javascript" charset="utf-8"></script>
+        <script src="../../book.js" type="text/javascript" charset="utf-8"></script>
+
+        <!-- Custom JS scripts -->
+        <script type="text/javascript" src="../../theme/pagetoc.js"></script>
+
+
+    </body>
+</html>

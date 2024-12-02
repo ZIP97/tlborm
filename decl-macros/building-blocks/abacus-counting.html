@@ -1,0 +1,520 @@
+<!DOCTYPE HTML>
+<html lang="zh" class="sidebar-visible no-js ayu">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>算盘计数 - The Little Book of Rust Macros （Rust 宏小册）</title>
+
+
+        <!-- Custom HTML head -->
+
+        <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff" />
+
+        <link rel="icon" href="../../favicon.svg">
+        <link rel="shortcut icon" href="../../favicon.png">
+        <link rel="stylesheet" href="../../css/variables.css">
+        <link rel="stylesheet" href="../../css/general.css">
+        <link rel="stylesheet" href="../../css/chrome.css">
+
+        <!-- Fonts -->
+        <link rel="stylesheet" href="../../FontAwesome/css/font-awesome.css">
+        <link rel="stylesheet" href="../../fonts/fonts.css">
+
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" href="../../highlight.css">
+        <link rel="stylesheet" href="../../tomorrow-night.css">
+        <link rel="stylesheet" href="../../ayu-highlight.css">
+
+        <!-- Custom theme stylesheets -->
+        <link rel="stylesheet" href="../../theme/pagetoc.css">
+        <link rel="stylesheet" href="../../theme/rust-syntax-bg-highlight.css">
+
+        <!-- MathJax -->
+        <script async type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    </head>
+    <body>
+        <!-- Provide site root to javascript -->
+        <script type="text/javascript">
+            var path_to_root = "../../";
+            var default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? "navy" : "ayu";
+        </script>
+
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script type="text/javascript">
+            try {
+                var theme = localStorage.getItem('mdbook-theme');
+                var sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script type="text/javascript">
+            var theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
+            if (theme === null || theme === undefined) { theme = default_theme; }
+            var html = document.querySelector('html');
+            html.classList.remove('no-js')
+            html.classList.remove('ayu')
+            html.classList.add(theme);
+            html.classList.add('js');
+        </script>
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script type="text/javascript">
+            var html = document.querySelector('html');
+            var sidebar = 'hidden';
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            }
+            html.classList.remove('sidebar-visible');
+            html.classList.add("sidebar-" + sidebar);
+        </script>
+
+        <nav id="sidebar" class="sidebar" aria-label="Table of contents">
+            <div class="sidebar-scrollbox">
+                <ol class="chapter"><li class="chapter-item expanded affix "><a href="introduction.html">简介</a></li><li class="chapter-item expanded "><a href="syntax-extensions.html"><strong aria-hidden="true">1.</strong> 语法拓展</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="syntax-extensions/source-analysis.html"><strong aria-hidden="true">1.1.</strong> 源代码分析</a></li><li class="chapter-item expanded "><a href="syntax-extensions/ast.html"><strong aria-hidden="true">1.2.</strong> AST 中的宏</a></li><li class="chapter-item expanded "><a href="syntax-extensions/expansion.html"><strong aria-hidden="true">1.3.</strong> 宏展开</a></li><li class="chapter-item expanded "><a href="syntax-extensions/hygiene.html"><strong aria-hidden="true">1.4.</strong> 卫生性</a></li><li class="chapter-item expanded "><a href="syntax-extensions/debugging.html"><strong aria-hidden="true">1.5.</strong> 调试</a></li></ol></li><li class="chapter-item expanded "><a href="decl-macros.html"><strong aria-hidden="true">2.</strong> 声明宏</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="decl-macros/macros-methodical.html"><strong aria-hidden="true">2.1.</strong> 思路</a></li><li class="chapter-item expanded "><a href="decl-macros/macros-practical.html"><strong aria-hidden="true">2.2.</strong> 实战</a></li><li class="chapter-item expanded "><a href="decl-macros/minutiae.html"><strong aria-hidden="true">2.3.</strong> 细节</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="decl-macros/minutiae/fragment-specifiers.html"><strong aria-hidden="true">2.3.1.</strong> 片段分类符</a></li><li class="chapter-item expanded "><a href="decl-macros/minutiae/metavar-and-expansion.html"><strong aria-hidden="true">2.3.2.</strong> 再谈元变量与宏展开</a></li><li class="chapter-item expanded "><a href="decl-macros/minutiae/metavar-expr.html"><strong aria-hidden="true">2.3.3.</strong> 元变量表达式</a></li><li class="chapter-item expanded "><a href="decl-macros/minutiae/hygiene.html"><strong aria-hidden="true">2.3.4.</strong> 宏是部分“卫生的”</a></li><li class="chapter-item expanded "><a href="decl-macros/minutiae/identifiers.html"><strong aria-hidden="true">2.3.5.</strong> 非标识符的“标识符”</a></li><li class="chapter-item expanded "><a href="decl-macros/minutiae/debugging.html"><strong aria-hidden="true">2.3.6.</strong> 调试</a></li><li class="chapter-item expanded "><a href="decl-macros/minutiae/scoping.html"><strong aria-hidden="true">2.3.7.</strong> 作用域</a></li><li class="chapter-item expanded "><a href="decl-macros/minutiae/import-export.html"><strong aria-hidden="true">2.3.8.</strong> 导入/导出宏</a></li><li class="chapter-item expanded "><a href="decl-macros/macros2.html"><strong aria-hidden="true">2.3.9.</strong> macro 2.0</a></li></ol></li><li class="chapter-item expanded "><a href="decl-macros/patterns.html"><strong aria-hidden="true">2.4.</strong> 模式</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="decl-macros/patterns/callbacks.html"><strong aria-hidden="true">2.4.1.</strong> 回调</a></li><li class="chapter-item expanded "><a href="decl-macros/patterns/tt-muncher.html"><strong aria-hidden="true">2.4.2.</strong> tt “撕咬机“</a></li><li class="chapter-item expanded "><a href="decl-macros/patterns/internal-rules.html"><strong aria-hidden="true">2.4.3.</strong> 内用规则</a></li><li class="chapter-item expanded "><a href="decl-macros/patterns/push-down-acc.html"><strong aria-hidden="true">2.4.4.</strong> 下推累积</a></li><li class="chapter-item expanded "><a href="decl-macros/patterns/repetition-replacement.html"><strong aria-hidden="true">2.4.5.</strong> 反复替换</a></li><li class="chapter-item expanded "><a href="decl-macros/patterns/tt-bundling.html"><strong aria-hidden="true">2.4.6.</strong> tt 捆绑</a></li></ol></li><li class="chapter-item expanded "><a href="decl-macros/building-blocks.html"><strong aria-hidden="true">2.5.</strong> 构件</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="decl-macros/building-blocks/ast-coercion.html"><strong aria-hidden="true">2.5.1.</strong> AST 强制转换</a></li><li class="chapter-item expanded "><a href="decl-macros/building-blocks/counting.html"><strong aria-hidden="true">2.5.2.</strong> 计数</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="decl-macros/building-blocks/abacus-counting.html"><strong aria-hidden="true">2.5.2.1.</strong> 算盘计数</a></li></ol></li><li class="chapter-item expanded "><a href="decl-macros/building-blocks/parsing.html"><strong aria-hidden="true">2.5.3.</strong> 解析</a></li></ol></li></ol></li><li class="chapter-item expanded "><a href="proc-macros.html"><strong aria-hidden="true">3.</strong> 过程宏</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="proc-macros/methodical.html"><strong aria-hidden="true">3.1.</strong> 思路</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="proc-macros/methodical/function-like.html"><strong aria-hidden="true">3.1.1.</strong> 函数式</a></li><li class="chapter-item expanded "><a href="proc-macros/methodical/attr.html"><strong aria-hidden="true">3.1.2.</strong> 属性式</a></li><li class="chapter-item expanded "><a href="proc-macros/methodical/derive.html"><strong aria-hidden="true">3.1.3.</strong> derive 式</a></li></ol></li><li class="chapter-item expanded "><div><strong aria-hidden="true">3.2.</strong> 实战</div></li><li class="chapter-item expanded "><a href="proc-macros/third-party-crates.html"><strong aria-hidden="true">3.3.</strong> 第三方 crates</a></li><li class="chapter-item expanded "><a href="proc-macros/hygiene.html"><strong aria-hidden="true">3.4.</strong> 卫生性和 Span</a></li><li class="chapter-item expanded "><div><strong aria-hidden="true">3.5.</strong> 技巧</div></li></ol></li><li class="chapter-item expanded "><a href="translation_statement.html">翻译说明</a></li></ol>
+            </div>
+            <div id="sidebar-resize-handle" class="sidebar-resize-handle"></div>
+        </nav>
+
+        <div id="page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                <div id="menu-bar-hover-placeholder"></div>
+                <div id="menu-bar" class="menu-bar sticky bordered">
+                    <div class="left-buttons">
+                        <button id="sidebar-toggle" class="icon-button" type="button" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="sidebar">
+                            <i class="fa fa-bars"></i>
+                        </button>
+                        <button id="theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="theme-list">
+                            <i class="fa fa-paint-brush"></i>
+                        </button>
+                        <ul id="theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="light">Light</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="ayu">Ayu (default)</button></li>
+                        </ul>
+                        <button id="search-toggle" class="icon-button" type="button" title="Search. (Shortkey: s)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="S" aria-controls="searchbar">
+                            <i class="fa fa-search"></i>
+                        </button>
+                    </div>
+
+                    <h1 class="menu-title">The Little Book of Rust Macros （Rust 宏小册）</h1>
+
+                    <div class="right-buttons">
+                        <a href="https://github.com/zjp-CN/tlborm" title="Git repository" aria-label="Git repository">
+                            <i id="git-repository-button" class="fa fa-github"></i>
+                        </a>
+
+                    </div>
+                </div>
+
+                <div id="search-wrapper" class="hidden">
+                    <form id="searchbar-outer" class="searchbar-outer">
+                        <input type="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
+                    </form>
+                    <div id="searchresults-outer" class="searchresults-outer hidden">
+                        <div id="searchresults-header" class="searchresults-header"></div>
+                        <ul id="searchresults">
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script type="text/javascript">
+                    document.getElementById('sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="content" class="content">
+                    <main>
+                        <!-- Page table of contents -->
+                        <div class="sidetoc"><nav class="pagetoc"></nav></div>
+
+                        <!-- Page table of contents -->
+                        <div class="sidetoc"><nav class="pagetoc"></nav></div>
+
+                        <!-- Page table of contents -->
+                        <div class="sidetoc"><nav class="pagetoc"></nav></div>
+
+                        <!-- Page table of contents -->
+                        <div class="sidetoc"><nav class="pagetoc"></nav></div>
+
+                        <!-- Page table of contents -->
+                        <div class="sidetoc"><nav class="pagetoc"></nav></div>
+
+                        <!-- Page table of contents -->
+                        <div class="sidetoc"><nav class="pagetoc"></nav></div>
+
+                        <!-- Page table of contents -->
+                        <div class="sidetoc"><nav class="pagetoc"></nav></div>
+
+                        <!-- Page table of contents -->
+                        <div class="sidetoc"><nav class="pagetoc"></nav></div>
+
+                        <!-- Page table of contents -->
+                        <div class="sidetoc"><nav class="pagetoc"></nav></div>
+
+                        <!-- Page table of contents -->
+                        <div class="sidetoc"><nav class="pagetoc"></nav></div>
+
+                        <!-- Page table of contents -->
+                        <div class="sidetoc"><nav class="pagetoc"></nav></div>
+
+                        <!-- Page table of contents -->
+                        <div class="sidetoc"><nav class="pagetoc"></nav></div>
+
+                        <!-- Page table of contents -->
+                        <div class="sidetoc"><nav class="pagetoc"></nav></div>
+
+                        <!-- Page table of contents -->
+                        <div class="sidetoc"><nav class="pagetoc"></nav></div>
+
+                        <!-- Page table of contents -->
+                        <div class="sidetoc"><nav class="pagetoc"></nav></div>
+
+                        <!-- Page table of contents -->
+                        <div class="sidetoc"><nav class="pagetoc"></nav></div>
+
+                        <!-- Page table of contents -->
+                        <div class="sidetoc"><nav class="pagetoc"></nav></div>
+
+                        <!-- Page table of contents -->
+                        <div class="sidetoc"><nav class="pagetoc"></nav></div>
+
+                        <!-- Page table of contents -->
+                        <div class="sidetoc"><nav class="pagetoc"></nav></div>
+
+                        <!-- Page table of contents -->
+                        <div class="sidetoc"><nav class="pagetoc"></nav></div>
+
+                        <!-- Page table of contents -->
+                        <div class="sidetoc"><nav class="pagetoc"></nav></div>
+
+                        <!-- Page table of contents -->
+                        <div class="sidetoc"><nav class="pagetoc"></nav></div>
+
+                        <!-- Page table of contents -->
+                        <div class="sidetoc"><nav class="pagetoc"></nav></div>
+
+                        <!-- Page table of contents -->
+                        <div class="sidetoc"><nav class="pagetoc"></nav></div>
+
+                        <!-- Page table of contents -->
+                        <div class="sidetoc"><nav class="pagetoc"></nav></div>
+
+                        <!-- Page table of contents -->
+                        <div class="sidetoc"><nav class="pagetoc"></nav></div>
+
+                        <!-- Page table of contents -->
+                        <div class="sidetoc"><nav class="pagetoc"></nav></div>
+
+                        <!-- Page table of contents -->
+                        <div class="sidetoc"><nav class="pagetoc"></nav></div>
+
+                        <!-- Page table of contents -->
+                        <div class="sidetoc"><nav class="pagetoc"></nav></div>
+
+                        <!-- Page table of contents -->
+                        <div class="sidetoc"><nav class="pagetoc"></nav></div>
+
+                        <h1 id="算盘计数"><a class="header" href="#算盘计数">算盘计数</a></h1>
+<h2 id="描述分析"><a class="header" href="#描述分析">描述分析</a></h2>
+<blockquote>
+<p>临时信息：需要更合适的例子。
+该用例采用 Rust 分组机制无法表示的匹配嵌套结构，
+实在是过于特殊，因此不适作为例子使用。</p>
+</blockquote>
+<blockquote>
+<p>注意：此节假设读者已经了解 <a href="../patterns/push-down-acc.html">下推累积</a>
+以及 <a href="../patterns/tt-muncher.html">标记树撕咬机</a> 。</p>
+</blockquote>
+<pre><pre class="playground"><code class="language-rust editable">macro_rules! abacus {
+    ((- $($moves:tt)*) -&gt; (+ $($count:tt)*)) =&gt; {
+        abacus!(($($moves)*) -&gt; ($($count)*))
+    };
+    ((- $($moves:tt)*) -&gt; ($($count:tt)*)) =&gt; {
+        abacus!(($($moves)*) -&gt; (- $($count)*))
+    };
+    ((+ $($moves:tt)*) -&gt; (- $($count:tt)*)) =&gt; {
+        abacus!(($($moves)*) -&gt; ($($count)*))
+    };
+    ((+ $($moves:tt)*) -&gt; ($($count:tt)*)) =&gt; {
+        abacus!(($($moves)*) -&gt; (+ $($count)*))
+    };
+
+    // Check if the final result is zero.
+    (() -&gt; ()) =&gt; { true };
+    (() -&gt; ($($count:tt)+)) =&gt; { false };
+}
+
+fn main() {
+    let equals_zero = abacus!((++-+-+++--++---++----+) -&gt; ());
+    assert_eq!(equals_zero, true);
+}</code></pre></pre>
+<p>这个例子所用的技巧用在如下情况：
+记录的计数会发生变化，且初始值为零或在零附近，且必须支持如下操作：</p>
+<ul>
+<li>增加一；</li>
+<li>减少一；</li>
+<li>与 0 （或任何其它固定的有限值）相比较；</li>
+</ul>
+<p>数值 n 将由一组共 n 个相同的特定标记来表示。
+对数值的修改操作将采用 <a href="../patterns/push-down-acc.html">下推累积</a> 模式由递归调用完成。
+假设所采用的特定标记是 <code>x</code> ，则上述操作可实现为：</p>
+<ul>
+<li>增加一：匹配<code>($($count:tt)*)</code>并替换为<code>(x $($count)*)</code>。</li>
+<li>减少一：匹配<code>(x $($count:tt)*)</code>并替换为<code>($($count)*)</code>。</li>
+<li>与0相比较：匹配<code>()</code>。</li>
+<li>与1相比较：匹配<code>(x)</code>。</li>
+<li>与2相比较：匹配<code>(x x)</code>。</li>
+<li><em>(依此类推...)</em></li>
+</ul>
+<p>作用于计数值的操作将所选的标记来回摆动，如同算盘摆动算子。<sup class="footnote-reference"><a href="#abacus">1</a></sup></p>
+<div class="footnote-definition" id="abacus"><sup class="footnote-definition-label">1</sup>
+<p>在这句极度单薄的辩解下，隐藏着选用此名称的 <em>真实</em> 理由：
+避免造出又一个名含“标记”的术语。今天就该跟你认识的作者谈谈避免
+<a href="https://en.wikipedia.org/wiki/Semantic_satiation">语义饱和</a> 吧！
+公平来讲，本来也可以称它为
+<a href="https://en.wikipedia.org/wiki/Unary_numeral_system">“一元计数(unary counting)”</a> 。</p>
+</div>
+<p>在想表示负数的情况下，值 <em>-n</em> 可被表示成 <em>n</em> 个相同的其它标记。
+在上例中，值 <em>+n</em> 被表示成 <em>n</em> 个 <code>+</code> 标记，而值 <em>-m</em> 被表示成 <em>m</em> 个 <code>-</code> 标记。</p>
+<p>有负数的情况下操作起来稍微复杂一些，
+增减操作在当前数值为负时实际上互换了角色。
+给定 <code>+</code> 和 <code>-</code> 分别作为正数与负数标记，相应操作的实现将变成：</p>
+<ul>
+<li>增加一：
+<ul>
+<li>匹配 <code>()</code> 并替换为 <code>(+)</code></li>
+<li>匹配 <code>(- $($count:tt)*)</code> 并替换为 <code>($($count)*)</code></li>
+<li>匹配 <code>($($count:tt)+)</code> 并替换为 <code>(+ $($count)+)</code></li>
+</ul>
+</li>
+<li>减少一：
+<ul>
+<li>匹配 <code>()</code> 并替换为 <code>(-)</code></li>
+<li>匹配 <code>(+ $($count:tt)*)</code> 并替换为 <code>($($count)*)</code></li>
+<li>匹配 <code>($($count:tt)+)</code> 并替换为 <code>(- $($count)+)</code></li>
+</ul>
+</li>
+<li>与 0 相比较：匹配 <code>()</code></li>
+<li>与 +1 相比较：匹配 <code>(+)</code></li>
+<li>与 -1 相比较：匹配 <code>(-)</code></li>
+<li>与 +2 相比较：匹配 <code>(++)</code></li>
+<li>与 -2 相比较：匹配 <code>(--)</code></li>
+<li><em>(依此类推...)</em></li>
+</ul>
+<p>注意在顶部的示例中，某些规则被合并到一起了
+（举例来说，对 <code>()</code> 及 <code>($($count:tt)+)</code> 的增加操作被合并为对
+<code>($($count:tt)*)</code> 的增加操作）。</p>
+<p>如果想要提取出所计数目的实际值，可再使用普通的
+<a href="../building-blocks/counting.html">计数宏</a> 。对上例来说，终结规则可换为：</p>
+<pre><code class="language-rust ignore">macro_rules! abacus {
+    // ...
+
+    // 下列规则将计数替换成实际值的表达式
+    (() -&gt; ()) =&gt; {0};
+    (() -&gt; (- $($count:tt)*)) =&gt; {
+        - ( count_tts!($( $count_tts:tt )*) )
+    };
+    (() -&gt; (+ $($count:tt)*)) =&gt; {
+        count_tts!($( $count_tts:tt )*)
+    };
+}
+
+// 计数一章任选一个宏
+macro_rules! count_tts {
+    // ...
+}</code></pre>
+<blockquote>
+<p><abbr title="Just for this example">仅限此例</abbr>：
+严格来说，想要达到此例的效果，没必要做的这么复杂。
+如果你不需要在宏中匹配所计的值，可直接采用重复来更加高效地实现：</p>
+<pre><code class="language-RUST ignore">macro_rules! abacus {
+    (-) =&gt; {-1};
+    (+) =&gt; {1};
+    ($( $moves:tt )*) =&gt; {
+        0 $(+ abacus!($moves))*
+    }
+}
+</code></pre>
+</blockquote>
+<h2 id="算盘游戏"><a class="header" href="#算盘游戏">算盘游戏</a></h2>
+<blockquote>
+<p>译者注：这章原作者的表述实在过于啰嗦，但是这个例子的确很有意思。
+基于这个例子框架，我给出如下浅显而完整的样例代码（可编辑运行）：</p>
+</blockquote>
+<pre><pre class="playground"><code class="language-rust editable">macro_rules! abacus {
+    ((- $($moves:tt)*) -&gt; (+ $($count:tt)*)) =&gt; {
+        {
+            println!("{} [-]{} | [+]{}", "-+1", stringify!($($moves)*), stringify!($($count)*));
+            abacus!(($($moves)*) -&gt; ($($count)*))
+        }
+    };
+    ((- $($moves:tt)*) -&gt; ($($count:tt)*)) =&gt; {
+        {
+            println!("{} [-]{} | - {}", "- 2", stringify!($($moves)*), stringify!($($count)*));
+            abacus!(($($moves)*) -&gt; (- $($count)*))
+        }
+    };
+    ((+ $($moves:tt)*) -&gt; (- $($count:tt)*)) =&gt; {
+        {
+            println!("{} [+]{} | [-]{}", "+-3", stringify!($($moves)*), stringify!($($count)*));
+            abacus!(($($moves)*) -&gt; ($($count)*))
+        }
+    };
+    ((+ $($moves:tt)*) -&gt; ($($count:tt)*)) =&gt; {
+        {
+            println!("{} [+]{} | + {}", "+ 4", stringify!($($moves)*), stringify!($($count)*));
+            abacus!(($($moves)*) -&gt; (+ $($count)*))
+        }
+    };
+
+    (() -&gt; ()) =&gt; {0};
+    (() -&gt; (- $($count:tt)*)) =&gt; {{-1 + abacus!(() -&gt; ($($count)*)) }};
+    (() -&gt; (+ $($count:tt)*)) =&gt; {{1 + abacus!(() -&gt; ($($count)*)) }};
+}
+
+fn main() {
+    println!("算盘游戏：左边与右边异号时抵消；非异号时，把左边的符号转移到右边；左边无符号时，游戏结束，计算右边得分");
+    println!("图示注解：左右符号消耗情况，分支编号，[消失的符号] 左边情况 | [消失的符号] 右边情况\n");
+
+    println!("计数结果：{}\n", abacus!((++-+-+) -&gt; (--+-+-)));
+    println!("计数结果：{}\n", abacus!((++-+-+) -&gt; (++-+-+)));
+    println!("计数结果：{}\n", abacus!((---+) -&gt; ()));
+    println!("计数结果：{}\n", abacus!((++-+-+) -&gt; ()));
+    println!("计数结果：{}\n", abacus!((++-+-+++--++---++----+) -&gt; ())); // 这是作者给的例子 :)
+}</code></pre></pre>
+<p>打印结果：</p>
+<pre><code class="language-text">算盘游戏：左边与右边异号时抵消；非异号时，把左边的符号转移到右边；左边无符号时，游戏结束，计算右边得分
+图示注解：左右符号消耗情况，分支编号，[消失的符号] 左边情况 | [消失的符号] 右边情况
+
++-3 [+]+ - + - + | [-]- + - + -
++-3 [+]- + - + | [-]+ - + -
+-+1 [-]+ - + | [+]- + -
++-3 [+]- + | [-]+ -
+-+1 [-]+ | [+]-
++-3 [+] | [-]
+计数结果：0
+
++ 4 [+]+ - + - + | + + + - + - +
++ 4 [+]- + - + | + + + + - + - +
+-+1 [-]+ - + | [+]+ + + - + - +
++ 4 [+]- + | + + + + - + - +
+-+1 [-]+ | [+]+ + + - + - +
++ 4 [+] | + + + + - + - +
+计数结果：4
+
+- 2 [-]- - + | - 
+- 2 [-]- + | - -
+- 2 [-]+ | - - -
++-3 [+] | [-]- -
+计数结果：-2
+
++ 4 [+]+ - + - + | + 
++ 4 [+]- + - + | + +
+-+1 [-]+ - + | [+]+
++ 4 [+]- + | + +
+-+1 [-]+ | [+]+
++ 4 [+] | + +
+计数结果：2
+
++ 4 [+]+ - + - + + + - - + + - - - + + - - - - + | + 
++ 4 [+]- + - + + + - - + + - - - + + - - - - + | + +
+-+1 [-]+ - + + + - - + + - - - + + - - - - + | [+]+
++ 4 [+]- + + + - - + + - - - + + - - - - + | + +
+-+1 [-]+ + + - - + + - - - + + - - - - + | [+]+
++ 4 [+]+ + - - + + - - - + + - - - - + | + +
++ 4 [+]+ - - + + - - - + + - - - - + | + + +
++ 4 [+]- - + + - - - + + - - - - + | + + + +
+-+1 [-]- + + - - - + + - - - - + | [+]+ + +
+-+1 [-]+ + - - - + + - - - - + | [+]+ +
++ 4 [+]+ - - - + + - - - - + | + + +
++ 4 [+]- - - + + - - - - + | + + + +
+-+1 [-]- - + + - - - - + | [+]+ + +
+-+1 [-]- + + - - - - + | [+]+ +
+-+1 [-]+ + - - - - + | [+]+
++ 4 [+]+ - - - - + | + +
++ 4 [+]- - - - + | + + +
+-+1 [-]- - - + | [+]+ +
+-+1 [-]- - + | [+]+
+-+1 [-]- + | [+]
+- 2 [-]+ | - 
++-3 [+] | [-]
+计数结果：0
+</code></pre>
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+                            <a rel="prev" href="../../decl-macros/building-blocks/counting.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                                <i class="fa fa-angle-left"></i>
+                            </a>
+
+                            <a rel="next" href="../../decl-macros/building-blocks/parsing.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                                <i class="fa fa-angle-right"></i>
+                            </a>
+
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                    <a rel="prev" href="../../decl-macros/building-blocks/counting.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                        <i class="fa fa-angle-left"></i>
+                    </a>
+
+                    <a rel="next" href="../../decl-macros/building-blocks/parsing.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                        <i class="fa fa-angle-right"></i>
+                    </a>
+            </nav>
+
+        </div>
+
+
+
+
+        <script type="text/javascript">
+            window.playground_copyable = true;
+        </script>
+
+        <script src="../../ace.js" type="text/javascript" charset="utf-8"></script>
+        <script src="../../editor.js" type="text/javascript" charset="utf-8"></script>
+        <script src="../../mode-rust.js" type="text/javascript" charset="utf-8"></script>
+        <script src="../../theme-dawn.js" type="text/javascript" charset="utf-8"></script>
+        <script src="../../theme-tomorrow_night.js" type="text/javascript" charset="utf-8"></script>
+
+        <script src="../../elasticlunr.min.js" type="text/javascript" charset="utf-8"></script>
+        <script src="../../mark.min.js" type="text/javascript" charset="utf-8"></script>
+        <script src="../../searcher.js" type="text/javascript" charset="utf-8"></script>
+
+        <script src="../../clipboard.min.js" type="text/javascript" charset="utf-8"></script>
+        <script src="../../highlight.js" type="text/javascript" charset="utf-8"></script>
+        <script src="../../book.js" type="text/javascript" charset="utf-8"></script>
+
+        <!-- Custom JS scripts -->
+        <script type="text/javascript" src="../../theme/pagetoc.js"></script>
+
+
+    </body>
+</html>

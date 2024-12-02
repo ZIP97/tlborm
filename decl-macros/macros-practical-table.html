@@ -1,0 +1,163 @@
+<style type="text/css">
+    /* Customisations. */
+
+    .small-code code {
+        font-size: 80%;
+    }
+
+    table.parse-table code {
+        white-space: pre-wrap;
+        background-color: transparent;
+        border: none;
+    }
+
+    table.parse-table tbody>tr>td:nth-child(1)>code:nth-of-type(2) {
+        color: red;
+        margin-top: -0.7em;
+        margin-bottom: -0.6em;
+    }
+
+    table.parse-table tbody>tr>td:nth-child(1)>code {
+        display: block;
+    }
+
+    table.parse-table tbody>tr>td:nth-child(2)>code {
+        display: block;
+    }
+</style>
+
+<table class="parse-table">
+    <colgroup>
+        <col width="40%" />
+        <col width="30%" />
+        <col width="10%" />
+        <col width="20%" />
+    </colgroup>
+    <thead>
+        <tr>
+            <th>Position</th>
+            <th>Input</th>
+            <th><code>inits</code></th>
+            <th><code>recur</code></th>
+        </tr>
+    </thead>
+    <tbody class="small-code">
+        <tr>
+            <td><code>a[n] = $($inits:expr),+ , ... , $recur:expr</code>
+                <code>⌂</code></td>
+            <td><code>a[n] = 0, 1, ..., a[n-1] + a[n-2]</code></td>
+            <td></td>
+            <td></td>
+        </tr>
+        <tr>
+            <td><code>a[n] = $($inits:expr),+ , ... , $recur:expr</code>
+                <code> ⌂</code></td>
+            <td><code>[n] = 0, 1, ..., a[n-1] + a[n-2]</code></td>
+            <td></td>
+            <td></td>
+        </tr>
+        <tr>
+            <td><code>a[n] = $($inits:expr),+ , ... , $recur:expr</code>
+                <code>  ⌂</code></td>
+            <td><code>n] = 0, 1, ..., a[n-1] + a[n-2]</code></td>
+            <td></td>
+            <td></td>
+        </tr>
+        <tr>
+            <td><code>a[n] = $($inits:expr),+ , ... , $recur:expr</code>
+                <code>   ⌂</code></td>
+            <td><code>] = 0, 1, ..., a[n-1] + a[n-2]</code></td>
+            <td></td>
+            <td></td>
+        </tr>
+        <tr>
+            <td><code>a[n] = $($inits:expr),+ , ... , $recur:expr</code>
+                <code>     ⌂</code></td>
+            <td><code>= 0, 1, ..., a[n-1] + a[n-2]</code></td>
+            <td></td>
+            <td></td>
+        </tr>
+        <tr>
+            <td><code>a[n] = $($inits:expr),+ , ... , $recur:expr</code>
+                <code>       ⌂</code></td>
+            <td><code>0, 1, ..., a[n-1] + a[n-2]</code></td>
+            <td></td>
+            <td></td>
+        </tr>
+        <tr>
+            <td><code>a[n] = $($inits:expr),+ , ... , $recur:expr</code>
+                <code>         ⌂</code></td>
+            <td><code>0, 1, ..., a[n-1] + a[n-2]</code></td>
+            <td></td>
+            <td></td>
+        </tr>
+        <tr>
+            <td><code>a[n] = $($inits:expr),+ , ... , $recur:expr</code>
+                <code>                     ⌂  ⌂</code></td>
+            <td><code>, 1, ..., a[n-1] + a[n-2]</code></td>
+            <td><code>0</code></td>
+            <td></td>
+        </tr>
+        <tr>
+            <td colspan="4" style="font-size:.8em;">
+                <em>注意</em>： 这有两个 `⌂` ，因为下个输入标记既能匹配 重复元素间的分隔符逗号，也能匹配 标志重复结束的逗号。宏系统将同时追踪这两种可能，直到决定具体选择为止。
+            </td>
+        </tr>
+        <tr>
+            <td><code>a[n] = $($inits:expr),+ , ... , $recur:expr</code>
+                <code>         ⌂                ⌂</code></td>
+            <td><code>1, ..., a[n-1] + a[n-2]</code></td>
+            <td><code>0</code></td>
+            <td></td>
+        </tr>
+        <tr>
+            <td><code>a[n] = $($inits:expr),+ , ... , $recur:expr</code>
+                <code>                     <del style="color:green">⌂</del>  ⌂</code></td>
+            <td><code>, ..., a[n-1] + a[n-2]</code></td>
+            <td><code>0</code>, <code>1</code></td>
+            <td></td>
+        </tr>
+        <tr>
+            <td colspan="4" style="font-size:.8em;">
+                <em>注意</em>：第一个被划掉的记号表明，
+                基于上个被消耗的标记，宏系统排除了一项先前存在的可能。
+            </td>
+        </tr>
+        <tr>
+            <td><code>a[n] = $($inits:expr),+ , ... , $recur:expr</code>
+                <code>                          ⌂</code></td>
+            <td><code>..., a[n-1] + a[n-2]</code></td>
+            <td><code>0</code>, <code>1</code></td>
+            <td></td>
+        </tr>
+        <tr>
+            <td><code>a[n] = $($inits:expr),+ , ... , $recur:expr</code>
+                <code>                              ⌂</code></td>
+            <td><code>, a[n-1] + a[n-2]</code></td>
+            <td><code>0</code>, <code>1</code></td>
+            <td></td>
+        </tr>
+        <tr>
+            <td><code>a[n] = $($inits:expr),+ , ... , $recur:expr</code>
+                <code>                                ⌂</code></td>
+            <td><code>a[n-1] + a[n-2]</code></td>
+            <td><code>0</code>, <code>1</code></td>
+            <td></td>
+        </tr>
+        <tr>
+            <td><code>a[n] = $($inits:expr),+ , ... , $recur:expr</code>
+                <code>                                           ⌂</code></td>
+            <td></td>
+            <td><code>0</code>, <code>1</code></td>
+            <td><code>a[n-1] + a[n-2]</code></td>
+        </tr>
+        <tr>
+            <td colspan="4" style="font-size:.8em;">
+                <em>注意</em>：这一步表明，类似 <a class="hljs">$recur:expr</a>
+                的绑定将消耗<em>一个完整的表达式</em>。
+                究竟什么算是一个完整的表达式，将由编译器决定。
+                稍后我们会谈到语言其它部分的类似行为。
+            </td>
+        </tr>
+    </tbody>
+</table>
